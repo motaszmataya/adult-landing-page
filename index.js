@@ -1,41 +1,16 @@
 export default {
   async fetch(request, env, ctx) {
-    // 1. Pull the encrypted credentials securely from the environment
-    const VALID_USERNAME = env.AUTH_USER;
-    const VALID_PASSWORD = env.AUTH_PASS;
+    // Simply render your premium landing page content directly
+    return new Response(LANDING_PAGE_HTML, {
+      headers: { 
+        "content-type": "text/html; charset=UTF-8"
+      },
+    });
+  },
+};
 
-    // Safety fallback: Check if variables are properly configured in Cloudflare
-    if (!VALID_USERNAME || !VALID_PASSWORD) {
-      return new Response('Server configuration error: Secrets missing.', { status: 500 });
-    }
-
-    // 2. Check for the Authorization header
-    const authHeader = request.headers.get('Authorization');
-
-    if (!authHeader) {
-      return new Response('Access Denied', {
-        status: 401,
-        headers: {
-          'WWW-Authenticate': 'Basic realm="Secure Subdomain", charset="UTF-8"',
-        },
-      });
-    }
-
-    // 3. Decode the credentials
-    try {
-      const [scheme, encoded] = authHeader.split(' ');
-      if (scheme !== 'Basic') {
-        throw new Error('Invalid auth scheme');
-      }
-
-      const decoded = atob(encoded);
-      const [username, password] = decoded.split(':');
-
-      // 4. Validate username and password using the Secrets
-      if (username === VALID_USERNAME && password === VALID_PASSWORD) {
-        
-        // --- YOUR AUTHENTIC LANDING PAGE HTML AS AN EMBEDDED STRING ---
-		const LANDING_PAGE_HTML = `<!DOCTYPE html>
+// --- YOUR AUTHENTIC LANDING PAGE HTML AS AN EMBEDDED STRING ---
+const LANDING_PAGE_HTML = `<!DOCTYPE html>
 		<html lang="en">
 		<head>
 		<meta charset="UTF-8">
@@ -821,19 +796,3 @@ export default {
     </script>
 </body>
 </html>
-        // --- YOUR EXISTING LANDING PAGE CODE ENDS HERE ---
-
-      }
-    } catch (e) {
-      // Fail silently and prompt again if encoding is broken
-    }
-
-    // 5. If credentials are wrong, prompt again
-    return new Response('Invalid Credentials', {
-      status: 401,
-      headers: {
-        'WWW-Authenticate': 'Basic realm="Secure Subdomain", charset="UTF-8"',
-      },
-    });
-  },
-};
