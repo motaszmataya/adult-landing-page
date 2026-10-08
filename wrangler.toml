@@ -1,0 +1,6 @@
+name = "adult-landing-page"
+main = "index.js"
+compatibility_date = "2026-10-08"
+
+[vars]
+AUTH_USER = "admin" # Set your default username here
