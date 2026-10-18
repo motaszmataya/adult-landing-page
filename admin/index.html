@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+window.onerror=function(msg,src,line,col,err){window.parent.postMessage({type:'app-error',message:msg,source:src,lineno:line,colno:col,stack:err&&err.stack||''},'*');};
+window.onunhandledrejection=function(e){window.parent.postMessage({type:'app-error',message:'Unhandled promise rejection: '+(e.reason&&e.reason.message||e.reason||'unknown'),stack:e.reason&&e.reason.stack||''},'*');};
+window.addEventListener('error',function(e){var t=e&&e.target;if(t&&t!==window&&t.tagName==='SCRIPT'){var u=t.src||'';window.parent.postMessage({type:'app-error',message:'Failed to load script'+(u?': '+u:' (inline module)'),source:u},'*');}},true);
+(function(){var _f=window.fetch;window.fetch=function(){var a=arguments,u=typeof a[0]==='string'?a[0]:(a[0]&&a[0].url)||'';var p=_f.apply(this,a);p.then(function(r){if(r.status===500){r.clone().text().then(function(b){window.parent.postMessage({type:'fetch-error',url:u,status:500,body:b},'*');}).catch(function(){window.parent.postMessage({type:'fetch-error',url:u,status:500,body:''},'*');});}}).catch(function(e){window.parent.postMessage({type:'fetch-error',url:u,status:0,body:e.message||'fetch failed'},'*');});return p;};})();
+</script>
+<script src="https://builder.puter.com/runtime.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffd400">
+<meta name="description" content="Photo gallery and video library.">
+<title>MediaHub — Gallery & Videos</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+    <!-- puter-pwa: generated, do not edit -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="MediaHub">
+    <!-- /puter-pwa -->
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <nav class="navbar navbar-expand-md navbar-dark px-0">
+      <a class="navbar-brand brand" href="#gallery">
+        <span class="brand-mark"><i data-lucide="aperture"></i></span>
+        <span>Media<b>Hub</b></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item"><a class="nav-link" data-route="gallery" href="#gallery"><i data-lucide="image" class="mr-1"></i> Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" data-route="videos" href="#videos"><i data-lucide="film" class="mr-1"></i> Videos</a></li>
+          <li class="nav-item ml-md-2"><a class="nav-link nav-admin" href="admin.html"><i data-lucide="lock" class="mr-1"></i> Admin</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="page-hero">
+    <h1 id="pageTitle">Gallery</h1>
+    <p id="pageSub">Browse our latest photos.</p>
+  </section>
+
+  <div class="cat-bar" id="catBar"></div>
+
+  <div class="row media-grid" id="grid"></div>
+
+  <div class="pager">
+    <div class="info" id="pagerInfo"></div>
+    <nav aria-label="Pages"><ul class="pagination" id="pagination"></ul></nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container d-flex justify-content-between flex-wrap">
+    <span>&copy; <span id="yr"></span> MediaHub</span>
+    <span><a href="admin.html" class="text-muted"><i data-lucide="lock" class="mr-1"></i>Admin</a></span>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<div class="modal fade" id="lightbox" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <div>
+          <h6 class="modal-title mb-0 font-weight-bold" id="lbTitle"></h6>
+          <small class="text-yellow" id="lbCat"></small>
+        </div>
+        <div class="d-flex align-items-center">
+          <button class="btn btn-ghost btn-sm mr-1" id="lbPrev" aria-label="Previous"><i data-lucide="chevron-left"></i></button>
+          <button class="btn btn-ghost btn-sm mr-2" id="lbNext" aria-label="Next"><i data-lucide="chevron-right"></i></button>
+          <button type="button" class="close m-0 p-1" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+      </div>
+      <div class="modal-body lightbox-body" id="lbBody"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="js/front.js"></script>
+</body>
+</html>
